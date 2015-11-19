@@ -8,7 +8,8 @@ std::shared_ptr<GameTask> CreateMapTask(int num_x, int num_y, int(*map)[], int b
 
 MapTask::MapTask(int num_x, int num_y, int(*map)[], int befor)
 {
-	Scx = befor;
+	Posx = befor;
+
 	memcpy(Map, map, sizeof(int) * num_x * num_y);
 }
 
@@ -28,10 +29,10 @@ GAMETASK_CODE MapTask::Update()
 	switch (DirType)
 	{
 	case CHARACTER_DIR_LEFT:
-		Scx=Scx+2;
+		Scx = Scx + 4;
 		break;
 	case CHARACTER_DIR_RIGHT:
-		Scx=Scx-2;
+		Scx = Scx - 4;
 		break;
 	}
 	return TASK_SUCCEEDED;
@@ -42,7 +43,7 @@ GAMETASK_CODE MapTask::Draw()
 	for (int x = 0; x < 60; x++)
 		for (int y = 0; y < 13; y++)
 		{
-			DrawGraph(32 * x + Scx, 32 * y, GraphHandle[Map[x][y]], true);
+			DrawGraph(32 * (Posx + x) + Scx, 32 * y, GraphHandle[Map[x][y]], true);
 		}
 
 	return TASK_SUCCEEDED;
@@ -57,4 +58,7 @@ bool MapTask::Exit()
 }
 int MapTask::getnum(){
 	return num;
+}
+int MapTask::getX(){
+	return Scx;
 }

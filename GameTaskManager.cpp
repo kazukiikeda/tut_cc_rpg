@@ -59,3 +59,6 @@ void GameTaskManager::EntryTask(std::shared_ptr<GameTask> task)
 int GameTaskManager::getnum(){
 	return num;
 }
+int GameTaskManager::getX(){
+	return Scx;
+}

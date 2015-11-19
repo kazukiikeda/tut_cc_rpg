@@ -8,11 +8,11 @@
 class ObjectTask : public GameTask, public CollisionObject
 {
 private:
-	CHARACTER_DIRECTION_TYPE DirType;
+	//CHARACTER_DIRECTION_TYPE DirType;
 protected:
 	int GraphHandle[400];
 	int ID;
-	int Posx;
+	CHARACTER_DIRECTION_TYPE DirType;
 	 std::vector<std::vector<std::vector<int>>> ObjectHandle;
 public:
 	ObjectTask(int x, int id, int object_num);
@@ -21,4 +21,5 @@ public:
 	virtual GAMETASK_CODE Draw();
 	bool Exit();
 	virtual int getnum();
+	virtual int getX();
 };

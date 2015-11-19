@@ -15,7 +15,9 @@ private:
 	int GraphHandle[4][3];
 	CHARACTER_MOVE_TYPE MoveType;
 	CHARACTER_DIRECTION_TYPE DirType;
-
+	bool jFlag;
+	float y_temp = 0;
+	float y_prev = 0;
 public:
 	PlayerTask(int x, int y);
 	bool Init();
@@ -23,4 +25,5 @@ public:
 	GAMETASK_CODE Draw();
 	bool Exit();
 	virtual int getnum();
+	virtual int getX();
 };

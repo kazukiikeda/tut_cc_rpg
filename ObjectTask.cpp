@@ -10,13 +10,6 @@ ObjectTask::ObjectTask(int x, int id, int object_num)
 	ID = id;
 	Posx = x;
 	CollisionObject::id = OBJECT_DOOR;
-	/*
-	std::vector<std::vector<std::vector<int>>> objectHandle ={
-		{ { 2, 20 },{ 235, 227, 305, 297, 289 }, { 357, 349, 306, 298, 290 }, { 235, 227, 307, 299, 291 } }
-	};
-	r = objectHandle[ID][0][1];
-	ObjectHandle = objectHandle;
-	*/
 	Object_num = object_num;
 }
 bool ObjectTask::Init()
@@ -41,10 +34,10 @@ GAMETASK_CODE ObjectTask::Update()
 		switch (DirType)
 	{
 		case CHARACTER_DIR_LEFT:
-			Scx = Scx + 2;
+			Scx = Scx + 4;
 			break;
 		case CHARACTER_DIR_RIGHT:
-			Scx = Scx - 2;
+			Scx = Scx - 4;
 			break;
 	}
 	CollisionObject::x = 32 * (Posx + ObjectHandle[ID][0][0]) + Scx;
@@ -69,4 +62,7 @@ bool ObjectTask::Exit()
 }
 int ObjectTask::getnum(){
 	return num;
+}
+int ObjectTask::getX(){
+	return Scx;
 }

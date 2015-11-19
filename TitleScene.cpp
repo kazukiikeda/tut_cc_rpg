@@ -24,7 +24,9 @@ bool TitleScene::Exec()
 
 	return true;
 }
-
+NextScene TitleScene::Next(){
+	return KEEP;
+}
 bool TitleScene::Exit()
 {
 	OutputDebugString("TitleScene::Exit()\n");

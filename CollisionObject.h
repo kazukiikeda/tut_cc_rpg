@@ -9,6 +9,7 @@ enum GAME_COLLISION_OBJ_ID
 	OBJECT_ITEM,
 	OBJECT_NPC,
 	OBJECT_DOOR,
+	OBJECT_GRAND,
 	OBJECT_ALLNUM,
 	OBJECT_UNDEFINED = 0xFFFFFFFF,
 
@@ -21,10 +22,13 @@ protected:
 	float x, y, r;
 	GAME_COLLISION_OBJ_ID id;
 	int Object_num;
-
+	bool eFlag;
+	//bool grandcheck = false;
 public:
 	CollisionObject();
 	int getObject_num();
+	void seteFlag(bool flag);
+	bool geteFlag();
 	GAME_COLLISION_OBJ_ID GetObjectID();
 
 	float GetPosX();

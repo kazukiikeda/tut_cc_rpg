@@ -10,7 +10,7 @@ PlayerTask::PlayerTask(int X, int Y)
 {
 	r = 20;
 	id = OBJECT_PLAYER;
-
+	jFlag = false;
 	x = (float)X * (float)Size_x;
 	y = (float)Y * (float)Size_y;
 
@@ -45,7 +45,18 @@ GAMETASK_CODE PlayerTask::Update()
 		DirType = CHARACTER_DIR_RIGHT;
 	}
 	
-
+	if (jFlag){
+		y_temp = y;
+		y += (y - y_prev) + 1;
+		y_prev = y_temp;
+		if (y == 320 )
+			jFlag = false;
+	}
+	if (KeyDownChecker::GetKeyDownState(KEY_INPUT_UP) && jFlag == false){
+		jFlag = true;
+		y_prev = y;
+		y = y - 20;
+	}
 	//ƒLƒƒƒ‰ˆÚ“®
 	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT)	 ||KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
 	{
@@ -90,4 +101,7 @@ bool PlayerTask::Exit()
 }
 int PlayerTask::getnum(){
 	return num;
+}
+int PlayerTask::getX(){
+	return Scx;
 }

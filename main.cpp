@@ -1,9 +1,11 @@
 #include <DxLib.h>
 #include "IScene.h"
 #include "KeyDownChecker.h"
+#include "vector"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	int i = 0;
 	//画面モードをウィンドウに変更
 	ChangeWindowMode(true);
 
@@ -16,12 +18,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Dxライブラリの初期化
 	if (DxLib_Init() == -1)
 		return -1;
-	
-	SetGraphMode(1280, 720, 32);
+	//各設定
+	SetGraphMode(1280, 720, 32); //ウィンドウサイズ
+	SetTransColor(255,0,255); //画像の透過色設定
+	SetFontSize(32); //フォントサイズ設定
 
 	//シーンを取得、初期化する
-	std::shared_ptr<IScene> ExecScene = CreateMapScene(BEFOR, Posx);
-	ExecScene->Init();
+	std::vector<std::shared_ptr<IScene>> ExecScene{ CreateMapScene(BEFOR, Posx)};
+	ExecScene[i]->Init();
 
 	//キー入力チェッククラスを作成
 	KeyDownChecker* Checker = KeyDownChecker::GetInstance();
@@ -36,21 +40,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Checker->CheckKeyState();
 
 		//シーンを実行する
-		if (!ExecScene->Exec())
+		if (!ExecScene[i]->Exec())
 		{
-			ExecScene->Exit();
-
+			ExecScene[i]->Exit();
+			
 			//次のシーンを取得
-			ExecScene = ExecScene->GetNextScene();
-			ExecScene->Init();
-		}/**/
+			if (ExecScene[i]->Next() == KEEP){
+				ExecScene[i] = ExecScene[i]->GetNextScene();
+			}
+			else if (ExecScene[i]->Next() == NEW){
+				ExecScene.push_back(ExecScene[i]->GetNextScene());
+				i++;
+			}
+			else if (ExecScene[i]->Next() == BACK){
+				ExecScene.pop_back();
+				i--;
+			}
+			ExecScene[i]->Init();
+		}
 
 		//裏画面情報を表画面に転送
 		ScreenFlip();
 	}
 
 	//シーンの終了処理
-	ExecScene->Exit();
+	ExecScene[i]->Exit();
 
 	//Dxライブラリの終了処理
 	DxLib_End();

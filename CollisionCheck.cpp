@@ -24,10 +24,15 @@ GAMETASK_CODE CollisionCheck::Update()
 
 			if (Obj1->IsCollision(Obj2)){
 				code = TASK_NEXTSCENE;
-				//int Cr = GetColor(0, 0, 0);
-				//DrawFormatString(1, 1, Cr, "%d ", Obj2->getObject_num());
 				num = Obj2->getObject_num();
+				if (Obj2->GetObjectID() == OBJECT_ENEMY){
+					code = TASK_BATTLESCENE;
+				}
+				if (Obj2->GetObjectID() == OBJECT_NPC){
+					code = TASK_TALK;
+				}
 			}
+			
 		}
 	}
 	

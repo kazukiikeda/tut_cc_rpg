@@ -18,4 +18,5 @@ public:
 	virtual GAMETASK_CODE Draw();
 	bool Exit();
 	virtual int getnum();
+	virtual int getX();
 };

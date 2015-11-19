@@ -83,29 +83,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="CollisionCheck.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="EnemyTask.cpp" />
     <ClCompile Include="GameTaskManager.cpp" />
+    <ClCompile Include="GrandObjectTask.cpp" />
     <ClCompile Include="KeyDownChecker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapScene.cpp" />
     <ClCompile Include="MapTask.cpp" />
+    <ClCompile Include="NPCTask.cpp" />
     <ClCompile Include="ObjectTask.cpp" />
     <ClCompile Include="PlayerTask.cpp" />
+    <ClCompile Include="TextTask.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BattleScene.h" />
     <ClInclude Include="CollisionCheck.h" />
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="EnemyTask.h" />
     <ClInclude Include="GameTask.h" />
+    <ClInclude Include="GrandObjectTask.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="KeyDownChecker.h" />
     <ClInclude Include="MapScene.h" />
     <ClInclude Include="MapTask.h" />
+    <ClInclude Include="NPCTask.h" />
     <ClInclude Include="ObjectTask.h" />
     <ClInclude Include="PlayerTask.h" />
+    <ClInclude Include="TextTask.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

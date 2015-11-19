@@ -29,6 +29,10 @@ float CollisionObject::GetRadius()
 	return r;
 }
 
+void CollisionObject::seteFlag(bool flag){
+	eFlag == flag;
+}
+
 bool CollisionObject::IsCollision(CollisionObject* Obj)
 {
 	if (Obj->GetObjectID() == id)
@@ -48,4 +52,7 @@ bool CollisionObject::IsCollision(CollisionObject* Obj)
 }
 int CollisionObject::getObject_num(){
 	return Object_num;
+}
+bool CollisionObject::geteFlag(){
+	return eFlag;
 }
