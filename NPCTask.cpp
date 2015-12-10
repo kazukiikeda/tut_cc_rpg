@@ -2,9 +2,9 @@
 #include "KeyDownChecker.h"
 #include <vector>
 
-std::shared_ptr<GameTask> CreateNPCTask(int x, int ID, int movepattern,  int Object_num)
+std::shared_ptr<GameTask> CreateNPCTask(int x, int y, int ID, int movepattern,  int Object_num)
 {
-	return std::make_shared<NPCTask>(x, ID, Object_num, movepattern);
+	return std::make_shared<NPCTask>(x, y, ID, Object_num, movepattern);
 }
 
 void NPCTask::MoveLeft()
@@ -45,19 +45,18 @@ void NPCTask::MoveDown()
 
 void NPCTask::Stay()
 {
-	MoveType = CHARACTER_STAY;
 	CurrentGraph = 0;
 }
 
-NPCTask::NPCTask(int X, int id, int object_num, int movepattern) : ObjectTask(x, id, Object_num)
+NPCTask::NPCTask(int X, int Y, int id, int object_num, int movepattern) : PlayerTask(X, Y)
 {
 	
 	CollisionObject::id = OBJECT_NPC;
 	Object_num = object_num;
-	x = (float)X * (float)Size_x;//15
-	y = (float)7 * (float)Size_y;//12
+	x = (float)X * (float)Size_x;
+	y = (float)Y * (float)Size_y;
 	r = 16;
-	Flag = true;
+	ID = id;
 	std::vector<std::vector<std::vector<int>>> Movepattern = {
 		{ {0}, {0}, {0} },
 		{ { 50, 100 }, { 30, 30 }, { 3, 1 } },
@@ -72,10 +71,6 @@ NPCTask::NPCTask(int X, int id, int object_num, int movepattern) : ObjectTask(x,
 		Process.Direction = (CHARACTER_DIRECTION_TYPE)Movepattern[movepattern][2][i];
 		MoveList.push_back(Process);
 	}
-	MoveType = CHARACTER_STAY;
-	DirType = CHARACTER_DIR_UP;
-	counter = 0;
-	CurrentGraph = 0;
 	CurrentMove = 0;
 	
 }
@@ -100,18 +95,18 @@ bool NPCTask::Init()
 GAMETASK_CODE NPCTask::Update()
 {
 	if (KeyDownChecker::GetKeyDownState(KEY_INPUT_RIGHT))
-		mapDir = 1;
+		mapDir = CHARACTER_DIR_RIGHT;
 	else if (KeyDownChecker::GetKeyDownState(KEY_INPUT_LEFT))
-		mapDir = 2;
+		mapDir = CHARACTER_DIR_LEFT;
 
 	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT) || KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
 		switch (mapDir)
 	{
-		case 2:
-			x = x + 4;
+		case CHARACTER_DIR_LEFT:
+			x = x + speed;
 			break;
-		case 1:
-			x = x - 4;
+		case CHARACTER_DIR_RIGHT:
+			x = x - speed;
 			break;
 	}
 	if (MoveList[CurrentMove].StartCount <= counter)

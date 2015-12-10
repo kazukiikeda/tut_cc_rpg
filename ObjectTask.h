@@ -2,24 +2,24 @@
 #pragma once
 
 #include <DxLib.h>
-#include "GameTask.h"
+#include "MapTask.h"
 #include "CollisionObject.h"
 #include <vector>
-class ObjectTask : public GameTask, public CollisionObject
+class ObjectTask : public MapTask, public CollisionObject
 {
-private:
-	//CHARACTER_DIRECTION_TYPE DirType;
 protected:
 	int GraphHandle[400];
 	int ID;
+	int PosY;
 	CHARACTER_DIRECTION_TYPE DirType;
 	 std::vector<std::vector<std::vector<int>>> ObjectHandle;
+	 int dirType;
 public:
-	ObjectTask(int x, int id, int object_num);
+	ObjectTask();
+	ObjectTask(int x, int y, int id, int object_num);
 	virtual bool Init();
-	virtual GAMETASK_CODE Update();
 	virtual GAMETASK_CODE Draw();
 	bool Exit();
-	virtual int getnum();
-	virtual int getX();
+	void setDirType(int i);
+	void changeDirType();
 };

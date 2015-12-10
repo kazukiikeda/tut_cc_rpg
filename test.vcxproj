@@ -88,7 +88,6 @@
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="EnemyTask.cpp" />
     <ClCompile Include="GameTaskManager.cpp" />
-    <ClCompile Include="GrandObjectTask.cpp" />
     <ClCompile Include="KeyDownChecker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapScene.cpp" />
@@ -105,7 +104,6 @@
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="EnemyTask.h" />
     <ClInclude Include="GameTask.h" />
-    <ClInclude Include="GrandObjectTask.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="KeyDownChecker.h" />
     <ClInclude Include="MapScene.h" />

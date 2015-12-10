@@ -20,4 +20,5 @@ public:
 	NextScene Next();
 	bool Exit();
 	virtual std::shared_ptr<IScene> GetNextScene();
+	void callback();
 };

@@ -29,7 +29,7 @@ GAMETASK_CODE CollisionCheck::Update()
 					code = TASK_BATTLESCENE;
 				}
 				if (Obj2->GetObjectID() == OBJECT_NPC){
-					code = TASK_TALK;
+					code = TASK_TALK;		
 				}
 			}
 			
@@ -37,4 +37,30 @@ GAMETASK_CODE CollisionCheck::Update()
 	}
 	
 	return code;
+}
+void CollisionCheck::checker(){
+	for (auto it1 : TaskList)
+	{
+		CollisionObject* Obj1 = dynamic_cast<CollisionObject*>(it1.get());
+		if (!Obj1)
+			continue;
+
+		for (auto it2 : TaskList)
+		{
+			CollisionObject* Obj2 = dynamic_cast<CollisionObject*>(it2.get());
+			if (!Obj2)
+				continue;
+			if (Obj2->GetObjectID() == OBJECT_NPC){
+				if (Obj1->Current(Obj2) < 0){
+					Obj2->setDirType(2);
+				}
+				else{
+					Obj2->setDirType(1);
+				}
+			}
+			if (Obj2->GetObjectID() == OBJECT_ENEMY && Obj2->getObject_num() == num){
+				Obj2->dead();
+			}
+		}
+	}
 }

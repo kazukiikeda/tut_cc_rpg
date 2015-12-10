@@ -39,21 +39,8 @@ public:
 	virtual GAMETASK_CODE Draw() = 0;
 	virtual bool Exit() = 0;
 	virtual int getnum() = 0;
-	virtual int getX() = 0;
-	int Scx = 0;
-	int num = 0;
-	int Posx = 0;
-	//int ID;
-	bool Flag = true;
-	virtual void setFlag(bool flag){
-		Flag = flag;
-	}
-	virtual bool getFlag(){
-		return Flag;
-	}
-	/*int getID(){
-		return ID;
-	}*/
+	virtual void checker() = 0;
+	int num ;
 	
 };
 class GameTaskManager : public GameTask
@@ -68,21 +55,19 @@ public:
 	virtual bool Exit();
 	virtual int getnum();
 	virtual void EntryTask(std::shared_ptr<GameTask> task);
-	virtual int getX();
+	virtual void checker(){};
 };
 
 std::shared_ptr<GameTask> CreateMapTask(int num_x, int num_y, int (*map)[], int befor);
 
 std::shared_ptr<GameTaskManager> CreateCollisionCheck();
 
-std::shared_ptr<GameTask> CreatePlayerTask();
+std::shared_ptr<GameTask> CreatePlayerTask(int x, int y);
 
-std::shared_ptr<GameTask> CreateObjectTask(int x, int ID, int Object_num);
-
-std::shared_ptr<GameTask> CreateGrandObjectTask(int x, int ID, int object_num, int y);
+std::shared_ptr<GameTask> CreateObjectTask(int x, int y, int ID, int Object_num);
 
 std::shared_ptr<GameTask> CreateTextTask(int id, std::shared_ptr<GameTask> Root);
 
-std::shared_ptr<GameTask> CreateEnemyTask(int x, int ID, int movepattern, int Object_num);
+std::shared_ptr<GameTask> CreateEnemyTask(int x, int y, int ID, int movepattern, int Object_num);
 
-std::shared_ptr<GameTask> CreateNPCTask(int x, int ID, int movepattern, int Object_num);
+std::shared_ptr<GameTask> CreateNPCTask(int x, int y, int ID, int movepattern, int Object_num);

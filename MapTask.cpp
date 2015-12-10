@@ -5,10 +5,10 @@ std::shared_ptr<GameTask> CreateMapTask(int num_x, int num_y, int(*map)[], int b
 {
 	return std::make_shared<MapTask>(num_x, num_y, map, befor);
 }
-
+MapTask::MapTask(){}
 MapTask::MapTask(int num_x, int num_y, int(*map)[], int befor)
 {
-	Posx = befor;
+	PosX = 32 * befor;
 
 	memcpy(Map, map, sizeof(int) * num_x * num_y);
 }
@@ -21,18 +21,18 @@ bool MapTask::Init()
 GAMETASK_CODE MapTask::Update()
 {
 	if (KeyDownChecker::GetKeyDownState(KEY_INPUT_RIGHT))
-		DirType = CHARACTER_DIR_RIGHT;
+		mapDir = CHARACTER_DIR_RIGHT;
 	else if (KeyDownChecker::GetKeyDownState(KEY_INPUT_LEFT))
-		DirType = CHARACTER_DIR_LEFT;
+		mapDir = CHARACTER_DIR_LEFT;
 
 	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT) || KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
-	switch (DirType)
+	switch (mapDir)
 	{
 	case CHARACTER_DIR_LEFT:
-		Scx = Scx + 4;
+		PosX = PosX + speed;
 		break;
 	case CHARACTER_DIR_RIGHT:
-		Scx = Scx - 4;
+		PosX = PosX - speed;
 		break;
 	}
 	return TASK_SUCCEEDED;
@@ -43,7 +43,7 @@ GAMETASK_CODE MapTask::Draw()
 	for (int x = 0; x < 60; x++)
 		for (int y = 0; y < 13; y++)
 		{
-			DrawGraph(32 * (Posx + x) + Scx, 32 * y, GraphHandle[Map[x][y]], true);
+			DrawGraph(32 * x + PosX , 32 * y, GraphHandle[Map[x][y]], true);
 		}
 
 	return TASK_SUCCEEDED;
@@ -56,9 +56,7 @@ bool MapTask::Exit()
 
 	return true;
 }
+
 int MapTask::getnum(){
 	return num;
-}
-int MapTask::getX(){
-	return Scx;
 }

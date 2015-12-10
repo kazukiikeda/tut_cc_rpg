@@ -1,9 +1,9 @@
 #include "PlayerTask.h"
 #include "KeyDownChecker.h"
 
-std::shared_ptr<GameTask> CreatePlayerTask()
+std::shared_ptr<GameTask> CreatePlayerTask(int x, int y)
 {
-	return std::make_shared<PlayerTask>(11, 5);
+	return std::make_shared<PlayerTask>(x, y);
 }
 
 PlayerTask::PlayerTask(int X, int Y)
@@ -13,7 +13,9 @@ PlayerTask::PlayerTask(int X, int Y)
 	jFlag = false;
 	x = (float)X * (float)Size_x;
 	y = (float)Y * (float)Size_y;
-
+	DirType = CHARACTER_DIR_RIGHT;
+	CurrentGraph = 0;
+	counter = 0;
 }
 
 bool PlayerTask::Init()
@@ -24,10 +26,8 @@ bool PlayerTask::Init()
 		for (int y = 0; y < 4; y++)
 			GraphHandle[y][x] = tmp[3 * y + x];
 
-	MoveType = CHARACTER_STAY;
-	DirType = CHARACTER_DIR_DOWN;
-
-	counter = 0;
+	//MoveType = CHARACTER_STAY;
+	
 
 	return true;
 }
@@ -61,24 +61,20 @@ GAMETASK_CODE PlayerTask::Update()
 	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT)	 ||KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
 	{
 		counter++;
-		MoveType = CHARACTER_MOVE;
+		//MoveType = CHARACTER_MOVE;
 
-		if (counter % 20 == 1)
+		if (counter % 20 == 1){
 			CurrentGraph = (CurrentGraph == 0 ? 2 : 0);
-
+		}
 		//‰æ–ÊŠO”»’è
 		if (x < 0)
 			x++;
-			//x = 640;
 		else if (x > 600)
 			x--;
-			//x = (float)-Size_x;
 	}
 	else
 	{
 		counter = 0;
-		MoveType = CHARACTER_STAY;
-
 		CurrentGraph = 1;
 	}
 	return TASK_SUCCEEDED;
@@ -98,10 +94,4 @@ bool PlayerTask::Exit()
 			 DeleteGraph(GraphHandle[x][y]);
 
 	return true;
-}
-int PlayerTask::getnum(){
-	return num;
-}
-int PlayerTask::getX(){
-	return Scx;
 }

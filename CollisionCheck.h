@@ -8,4 +8,5 @@ class CollisionCheck : public GameTaskManager
 {
 public:
 	GAMETASK_CODE Update();
+	void checker();
 };

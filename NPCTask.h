@@ -1,8 +1,7 @@
 #pragma once
 
 #include <DxLib.h>
-#include "ObjectTask.h"
-#include "CollisionObject.h"
+#include "PlayerTask.h"
 #include <vector>
 
 typedef struct{
@@ -11,20 +10,15 @@ typedef struct{
 	CHARACTER_DIRECTION_TYPE Direction;
 }MoveProcess;
 
-class NPCTask : public ObjectTask
+class NPCTask : public PlayerTask
 {
-protected:
+private:
 	const int Size_x = 32;
 	const int Size_y = 48;
-	int counter;
-	int CurrentGraph;
 	int GraphHandle[4][4];
-	CHARACTER_MOVE_TYPE MoveType;
-	CHARACTER_DIRECTION_TYPE DirType;
-	int mapDir = 0;
-	std::vector<MoveProcess> MoveList;
 	int CurrentMove;
-
+protected:
+	std::vector<MoveProcess> MoveList;
 	void MoveLeft();
 	void MoveRight();
 	void MoveUp();
@@ -32,7 +26,7 @@ protected:
 	void Stay();
 
 public:
-	NPCTask(int X, int id, int Object_num, int movepatern);
+	NPCTask(int X, int Y, int id, int Object_num, int movepattern);
 	virtual bool Init();
 	virtual GAMETASK_CODE Update();
 	virtual GAMETASK_CODE Draw();

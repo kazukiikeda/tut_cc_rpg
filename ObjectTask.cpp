@@ -1,14 +1,16 @@
 #include "ObjectTask.h"
 #include "KeyDownChecker.h"
 
-std::shared_ptr<GameTask> CreateObjectTask(int x, int ID, int Object_num)
+std::shared_ptr<GameTask> CreateObjectTask(int x, int y, int ID, int Object_num)
 {
-	return std::make_shared<ObjectTask>(x, ID, Object_num);
+	return std::make_shared<ObjectTask>(x, y, ID, Object_num);
 }
-ObjectTask::ObjectTask(int x, int id, int object_num)
+ObjectTask::ObjectTask(){}
+ObjectTask::ObjectTask(int x, int y, int id, int object_num)
 {
 	ID = id;
-	Posx = x;
+	PosX = x * 32;
+	PosY = y * 32;
 	CollisionObject::id = OBJECT_DOOR;
 	Object_num = object_num;
 }
@@ -23,32 +25,12 @@ bool ObjectTask::Init()
 	return true;
 }
 
-GAMETASK_CODE ObjectTask::Update()
-{
-	if (KeyDownChecker::GetKeyDownState(KEY_INPUT_RIGHT))
-		DirType = CHARACTER_DIR_RIGHT;
-	else if (KeyDownChecker::GetKeyDownState(KEY_INPUT_LEFT))
-		DirType = CHARACTER_DIR_LEFT;
-
-	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT) || KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
-		switch (DirType)
-	{
-		case CHARACTER_DIR_LEFT:
-			Scx = Scx + 4;
-			break;
-		case CHARACTER_DIR_RIGHT:
-			Scx = Scx - 4;
-			break;
-	}
-	CollisionObject::x = 32 * (Posx + ObjectHandle[ID][0][0]) + Scx;
-	return TASK_SUCCEEDED;
-}
-
 GAMETASK_CODE ObjectTask::Draw()
 {
+	CollisionObject::x = PosX + 32 * ObjectHandle[ID][0][0];
 	for (int x = 1; x < ObjectHandle[ID].size() ; x++){
 		for (int y = 0; y < ObjectHandle[ID][x].size(); y++){
-			DrawGraph(32 * (Posx + x) + Scx, 32 * (11 - y), GraphHandle[ObjectHandle[ID][x][y]], true);
+			DrawGraph(x * 32 + PosX, PosY - 32 * y, GraphHandle[ObjectHandle[ID][x][y]], true);
 		}
 	}
 	return TASK_SUCCEEDED;
@@ -60,9 +42,8 @@ bool ObjectTask::Exit()
 		DeleteGraph(GraphHandle[i]);
 	return true;
 }
-int ObjectTask::getnum(){
-	return num;
-}
-int ObjectTask::getX(){
-	return Scx;
+
+void ObjectTask::setDirType(int i){
+	//dirType = i;
+	DirType = (CHARACTER_DIRECTION_TYPE)i;
 }

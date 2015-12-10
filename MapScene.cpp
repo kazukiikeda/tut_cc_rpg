@@ -4,7 +4,7 @@
 
 #define grand 3
 
-std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int Posx)
+std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int PosX)
 {
 	//マップ情報
 	int tmpMap[100][15] = {
@@ -63,20 +63,19 @@ std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int Posx)
 	SetBackgroundColor(255, 255, 255);
 	
 	//タスクを登録
-	manager->EntryTask(CreateMapTask(100, 15, (int (*)[])tmpMap, Posx));
+	manager->EntryTask(CreateMapTask(100, 15, (int (*)[])tmpMap, PosX));
 
-	manager->EntryTask(CreateObjectTask(Posx + 10, 0, 1));
-	manager->EntryTask(CreateObjectTask(Posx + 20, 0, 2));
+	manager->EntryTask(CreateObjectTask(PosX + 10, 11, 0, 1));
+	manager->EntryTask(CreateObjectTask(PosX + 20, 11, 0, 2));
 
-	manager->EntryTask(CreateEnemyTask(Posx + 5, 0, 2, 3));
-	manager->EntryTask(CreateEnemyTask(Posx + 30, 1, 2, 4));
-	//(int x, int ID, int movepattern, int Object_num);
-
-	manager->EntryTask(CreateNPCTask(Posx + 9, 0, 1, 1));
+	manager->EntryTask(CreateEnemyTask(PosX + 5, 7, 0, 2, 3));
+	manager->EntryTask(CreateEnemyTask(PosX + 30, 7, 1, 2, 4));
 	
-		manager->EntryTask(CreatePlayerTask());
+	manager->EntryTask(CreateNPCTask(PosX + 9, 7, 0, 1, 1));
 	
-	std::shared_ptr<MapScene> Scene = std::make_shared<MapScene>(manager, Posx);
+		manager->EntryTask(CreatePlayerTask(11, 5));
+	
+	std::shared_ptr<MapScene> Scene = std::make_shared<MapScene>(manager, PosX);
 	
 	return Scene;
 }
@@ -85,9 +84,7 @@ MapScene::MapScene(std::shared_ptr<GameTask> roottask, int x)
 {
 	PosX = x;
 	Root = roottask;
-	//Root->Flag = false;;
-	//Flag = true;
-	num = 0;
+	
 }
 
 bool MapScene::Init()
@@ -102,28 +99,30 @@ bool MapScene::Exec()
 	bool flag = true;
 	
 		code = Root->Update();
-		PosX = Root->Scx;
+
 		if (code == TASK_NEXTSCENE || code == TASK_BATTLESCENE){
 			num = Root->getnum();
-			//ID = Root->getID();
-			//Root->setFlag(false);
 		}
-		if (code == TASK_BATTLESCENE){
+		if (code == TASK_BATTLESCENE){	
+			Root->checker();
 			return false;
 		}
 		if (KeyDownChecker::GetKeyDownState(KEY_INPUT_A) && code == TASK_NEXTSCENE){
 			return false;
 		}
 		if (KeyDownChecker::GetKeyDownState(KEY_INPUT_Q) && code == TASK_TALK){
+			Root->checker();
 			std::shared_ptr<GameTask> root = CreateTextTask(num, Root);
+			
 			root->Init();
+			
 			root->Update();
+			
 			root->Draw();
+			
 			root->Exit();
 		}
-		//if (Root->getnum() == befornum)
 		code = Root->Draw();
-
 		if (code)
 		{
 			switch (code)
@@ -136,10 +135,11 @@ bool MapScene::Exec()
 	return flag;
 }
 NextScene MapScene::Next(){	
-		if (num == 3)
-			return NEW;
-		if (num == 4)
-			return NEW;
+	switch (num){
+	case 3:
+	case 4:
+		return NEW;
+	}
 	return KEEP;
 }
 bool MapScene::Exit()
@@ -147,18 +147,22 @@ bool MapScene::Exit()
 		Root->Exit();
 	return true;
 }
-
+void MapScene::callback(){
+	OutputDebugString("帰ってきーたよ\n");
+}
 std::shared_ptr<IScene> MapScene::GetNextScene()
 {
-		if (num == 0)
-			return  CreateTitleScene();
-		if (num == 1)
-			return CreateMapScene(MAP, -5);
-		if (num == 2)
-			return CreateMapScene(MAP, 5);
-		if (num == 3)
-			return CreateBattleScene(3);
-		if (num == 4)
-			return CreateBattleScene(4);
+	switch (num){
+	case 0:
+		return  CreateTitleScene();
+	case 1:
+		return CreateMapScene(MAP, -5);
+	case 2:
+		return CreateMapScene(MAP, 5);
+	case 3:
+	case 4:
+		return CreateBattleScene(num);
+	}
+		return CreateTitleScene();
 
 }

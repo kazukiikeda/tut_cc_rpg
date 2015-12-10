@@ -25,6 +25,7 @@ protected:
 	int befornum;
 	bool Flag;
 	int ID;
+	int dead;
 public:
 	virtual bool Init() = 0;
 	virtual bool Exec() = 0;
@@ -32,8 +33,9 @@ public:
 	virtual bool Exit() = 0;
 	virtual std::shared_ptr<IScene> GetNextScene() = 0;
 	bool talkflag = false;
+	virtual void callback(){};
 };
 
-std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int Posx);
+std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int PosX);
 std::shared_ptr<IScene> CreateTitleScene();
 std::shared_ptr<IScene> CreateBattleScene(int Object_num);

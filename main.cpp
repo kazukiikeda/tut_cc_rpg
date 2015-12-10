@@ -13,7 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	BeforScene BEFOR = START;
-	int Posx = 0;
+	int PosX = 0;
 	
 	//Dxライブラリの初期化
 	if (DxLib_Init() == -1)
@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetFontSize(32); //フォントサイズ設定
 
 	//シーンを取得、初期化する
-	std::vector<std::shared_ptr<IScene>> ExecScene{ CreateMapScene(BEFOR, Posx)};
+	std::vector<std::shared_ptr<IScene>> ExecScene{ CreateMapScene(BEFOR, PosX)};
 	ExecScene[i]->Init();
 
 	//キー入力チェッククラスを作成
@@ -53,9 +53,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				i++;
 			}
 			else if (ExecScene[i]->Next() == BACK){
+				//battleシーンから戻ってきた時の処理関数が必要(敵キャラを消す)
+				
 				ExecScene.pop_back();
 				i--;
+				ExecScene[i]->callback();
 			}
+			
 			ExecScene[i]->Init();
 		}
 

@@ -28,11 +28,6 @@ float CollisionObject::GetRadius()
 {
 	return r;
 }
-
-void CollisionObject::seteFlag(bool flag){
-	eFlag == flag;
-}
-
 bool CollisionObject::IsCollision(CollisionObject* Obj)
 {
 	if (Obj->GetObjectID() == id)
@@ -42,9 +37,7 @@ bool CollisionObject::IsCollision(CollisionObject* Obj)
 	float Dist_x = Obj->GetPosX() - this->x;
 	float Dist_y = Obj->GetPosY() - this->y;
 	float Dist = sqrt(Dist_x*Dist_x + Dist_y*Dist_y);
-	//Dist_x = sqrt(Dist_x * Dist_x);
-	//Ž©•ª‚Æ‘ŠŽè‚Ì‘Ì‚Ì‘å‚«‚³‚Ì˜a‚ª‹——£‚æ‚è’Z‚¯‚ê‚Î“–‚½‚è
-	//if (Dist_x <= this ->r + Obj->GetRadius())
+	//Ž©•ª‚Æ‘ŠŽè‚Ì‘Ì‚Ì‘å‚«‚³‚Ì˜a‚ª‹——£‚æ‚è’Z‚¯‚ê‚Î“–‚½‚è	
 	if (Dist <= this->r + Obj->GetRadius())
 		return true;
 
@@ -53,6 +46,11 @@ bool CollisionObject::IsCollision(CollisionObject* Obj)
 int CollisionObject::getObject_num(){
 	return Object_num;
 }
-bool CollisionObject::geteFlag(){
-	return eFlag;
+int CollisionObject::Current(CollisionObject* Obj){
+	float Dist = Obj->GetPosX() - this->x;
+	return (Dist > 0 ? 1 : -1);
 }
+
+void CollisionObject::setDirType(int i){}
+void CollisionObject::dead(){}
+
