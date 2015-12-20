@@ -1,15 +1,18 @@
 #include "NPCTask.h"
 #include "KeyDownChecker.h"
 #include <vector>
+#include <fstream>
+#include <string>
+#include <sstream>
 
-std::shared_ptr<GameTask> CreateNPCTask(int x, int y, int ID, int movepattern,  int Object_num)
+std::shared_ptr<GameTask> CreateNPCTask(int x, int y, std::string ID, std::string movepattern, std::string text, int Object_num)
 {
-	return std::make_shared<NPCTask>(x, y, ID, Object_num, movepattern);
+	return std::make_shared<NPCTask>(x, y, ID, Object_num, movepattern, text);
 }
 
 void NPCTask::MoveLeft()
 {
-	DirType = CHARACTER_DIR_RIGHT;
+	DirType = CHARACTER_DIR_LEFT;
 	x--;
 
 	if (counter % 20 == 1)
@@ -18,7 +21,7 @@ void NPCTask::MoveLeft()
 
 void NPCTask::MoveRight()
 {
-	DirType = CHARACTER_DIR_DOWN;
+	DirType = CHARACTER_DIR_RIGHT;
 	x++;
 
 	if (counter % 20 == 1)
@@ -47,45 +50,75 @@ void NPCTask::Stay()
 {
 	CurrentGraph = 0;
 }
-
-NPCTask::NPCTask(int X, int Y, int id, int object_num, int movepattern) : PlayerTask(X, Y)
+NPCTask::NPCTask(int X, int Y, std::string id, int object_num, std::string movepattern) : PlayerTask(X, Y)
 {
-	
 	CollisionObject::id = OBJECT_NPC;
 	Object_num = object_num;
 	x = (float)X * (float)Size_x;
 	y = (float)Y * (float)Size_y;
 	r = 16;
-	ID = id;
-	std::vector<std::vector<std::vector<int>>> Movepattern = {
-		{ {0}, {0}, {0} },
-		{ { 50, 100 }, { 30, 30 }, { 3, 1 } },
-		{ { 120, 260 }, { 128, 128 }, { 3, 1} }
-	};
-
-	for (int i = 0; i < Movepattern[movepattern][0].size(); i++)
-	{
+	Object_ID = id;
+	std::ifstream ifs;
+	std::string str;
+	int i = 0;
+	ifs.open("Data/MovePattern/" + movepattern + ".txt");
+	while (getline(ifs, str)){
+		std::stringstream stream(str);
+		std::string dumy;
 		MoveProcess Process;
-		Process.StartCount = Movepattern[movepattern][0][i];
-		Process.ProcessCount = Movepattern[movepattern][1][i];
-		Process.Direction = (CHARACTER_DIRECTION_TYPE)Movepattern[movepattern][2][i];
+		i = 0;
+		while (getline(stream, dumy, ',')){
+			if (i == 0)
+				Process.StartCount = stoi(dumy);
+			if (i == 1)
+				Process.ProcessCount = stoi(dumy);
+			if (i == 2)
+				Process.Direction = (CHARACTER_DIRECTION_TYPE)stoi(dumy);
+			i++;
+		}
 		MoveList.push_back(Process);
 	}
+	ifs.close();
 	CurrentMove = 0;
-	
+	buf = "Data/NPC/" + id + ".bmp";
+}
+NPCTask::NPCTask(int X, int Y, std::string id, int object_num, std::string movepattern, std::string textad) : PlayerTask(X, Y)
+{
+	CollisionObject::id = OBJECT_NPC;
+	Object_num = object_num;
+	x = (float)X * (float)Size_x;
+	y = (float)Y * (float)Size_y;
+	r = 16;
+	Object_ID = id;
+	Object_text = textad;
+	std::ifstream ifs;
+	std::string str;
+	int i = 0;
+	ifs.open("Data/MovePattern/"+movepattern+".txt");
+	while (getline(ifs, str)){
+		std::stringstream stream(str);
+		std::string dumy;
+		MoveProcess Process;
+		i = 0;
+		while (getline(stream, dumy, ',')){
+			if (i == 0)
+				Process.StartCount = stoi(dumy);
+			if (i == 1)
+				Process.ProcessCount = stoi(dumy);
+			if (i == 2)
+				Process.Direction = (CHARACTER_DIRECTION_TYPE)stoi(dumy);
+			i++;
+			}
+		MoveList.push_back(Process);		
+	}
+	CurrentMove = 0;
+	buf = "Data/NPC/" + id + ".bmp";
 }
 
 bool NPCTask::Init()
 {
 	int tmp[16];
-	switch (ID){
-	case 0:
-		LoadDivGraph("Data/Character/NPC1.bmp", 16, 4, 4, Size_x, Size_y, tmp);
-		break;
-	case 1:
-		LoadDivGraph("Data/Character/char_skeleton.bmp", 16, 4, 4, Size_x, Size_y, tmp);
-		break;
-	}
+	LoadDivGraph(buf.c_str(), 16, 4, 4, Size_x, Size_y, tmp);
 	for (int x = 0; x < 4; x++)
 	for (int y = 0; y < 4; y++)
 		GraphHandle[y][x] = tmp[4 * y + x];
@@ -99,15 +132,16 @@ GAMETASK_CODE NPCTask::Update()
 	else if (KeyDownChecker::GetKeyDownState(KEY_INPUT_LEFT))
 		mapDir = CHARACTER_DIR_LEFT;
 
-	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT) || KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
+	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT) || KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT)){
 		switch (mapDir)
-	{
+		{
 		case CHARACTER_DIR_LEFT:
 			x = x + speed;
 			break;
 		case CHARACTER_DIR_RIGHT:
 			x = x - speed;
 			break;
+		}
 	}
 	if (MoveList[CurrentMove].StartCount <= counter)
 	{
@@ -160,4 +194,15 @@ bool NPCTask::Exit()
 	for (int y = 0; y < 4; y++)
 		DeleteGraph(GraphHandle[x][y]);
 	return true;
+}
+void NPCTask::stop(int i){
+	switch (i)
+	{
+	case -1:
+		x = x - speed;
+		break;
+	case 1:
+		x = x + speed;
+		break;
+	}
 }

@@ -13,7 +13,7 @@ private:
 	int GraphHandle[4][4];
 	bool Flag;
 public:
-	EnemyTask(int X, int Y, int id, int Object_num, int movepattern);
+	EnemyTask(int X, int Y, std::string id, int Object_num, std::string movepattern);
 	bool Init();
 	virtual GAMETASK_CODE Draw();
 	virtual bool Exit();

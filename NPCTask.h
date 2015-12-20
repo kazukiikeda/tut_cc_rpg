@@ -26,9 +26,11 @@ protected:
 	void Stay();
 
 public:
-	NPCTask(int X, int Y, int id, int Object_num, int movepattern);
+	NPCTask(int X, int Y, std::string id, int Object_num, std::string movepattern);
+	NPCTask(int X, int Y, std::string id, int Object_num, std::string movepattern, std::string text);
 	virtual bool Init();
 	virtual GAMETASK_CODE Update();
 	virtual GAMETASK_CODE Draw();
 	virtual bool Exit();
+	virtual void stop(int i);
 };

@@ -1,15 +1,14 @@
-//TitleScene.h
 #pragma once
-
 #include "IScene.h"
 #include <vector>
 
-class TitleScene : public IScene
+class EpilogueScene : public IScene
 {
 private:
-	int GraphHandle[400];
-	std::vector<std::string> text;
+	std::vector<std::string> talk;
+	int cnt;
 public:
+	EpilogueScene();
 	bool Init();
 	bool Exec();
 	NextScene Next();

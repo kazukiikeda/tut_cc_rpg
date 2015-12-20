@@ -30,7 +30,7 @@ GAMETASK_CODE GameTaskManager::Draw()
 {
 	GAMETASK_CODE ReturnCode = TASK_SUCCEEDED;
 
-	//Update‚ğÀs‚·‚é
+	//Draw‚ğÀs‚·‚é
 	std::list<std::shared_ptr<GameTask>>::iterator it;
 	for (it = TaskList.begin(); it != TaskList.end();)
 	{
@@ -58,4 +58,24 @@ void GameTaskManager::EntryTask(std::shared_ptr<GameTask> task)
 
 int GameTaskManager::getnum(){
 	return num;
+}
+std::string GameTaskManager::getID(){
+	return ID;
+}
+std::string GameTaskManager::getNext(){
+	return next;
+}
+std::string GameTaskManager::getText(){
+	return text;
+}
+int GameTaskManager::getNextX(){
+	return nextPosX;
+}
+void GameTaskManager::stop(int i){
+	std::list<std::shared_ptr<GameTask>>::iterator it;
+	for (it = TaskList.begin(); it != TaskList.end();)
+	{
+		(*it)->stop(i);
+		it++;
+	}
 }

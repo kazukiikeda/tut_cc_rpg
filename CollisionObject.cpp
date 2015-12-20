@@ -46,11 +46,22 @@ bool CollisionObject::IsCollision(CollisionObject* Obj)
 int CollisionObject::getObject_num(){
 	return Object_num;
 }
+std::string CollisionObject::getObjectID(){
+	return Object_ID;
+}
+std::string CollisionObject::getObjectnext(){
+	return Object_next;
+}
+int CollisionObject::getObjectnextX(){
+	return Object_nextX;
+}
+std::string CollisionObject::getObjectText(){
+	return Object_text;
+}
 int CollisionObject::Current(CollisionObject* Obj){
 	float Dist = Obj->GetPosX() - this->x;
 	return (Dist > 0 ? 1 : -1);
 }
-
 void CollisionObject::setDirType(int i){}
 void CollisionObject::dead(){}
 

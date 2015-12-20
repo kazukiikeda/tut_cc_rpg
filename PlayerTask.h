@@ -7,11 +7,10 @@
 class PlayerTask : public ObjectTask
 {
 private:
-	const int Size_x = 48;
-	const int Size_y = 64;
-	int GraphHandle[4][3];
+	const int Size_x = 32;
+	const int Size_y = 48;
+	int GraphHandle[4][4];
 protected:
-	//CHARACTER_DIRECTION_TYPE DirType;
 	int counter;
 	int CurrentGraph;
 	bool jFlag;
@@ -23,4 +22,5 @@ public:
 	GAMETASK_CODE Update();
 	GAMETASK_CODE Draw();
 	bool Exit();
+	virtual void stop(){};
 };

@@ -4,21 +4,20 @@
 #include "IScene.h"
 #include "GameTask.h"
 #include "vector"
-
+#include "GameTask.h"
 class MapScene : public IScene
 {
 protected:
 	bool ExitFlag;
+	bool EventFlag;
 	std::shared_ptr<GameTask> Root;
 	GAMETASK_CODE code;
-	int PosX;
-	std::shared_ptr<GameTaskManager> task;
 public:
-	MapScene(std::shared_ptr<GameTask> roottask, int x);
+	MapScene();
+	MapScene(std::shared_ptr<GameTask> roottask, std::string Scenename);
 	bool Init();
 	bool Exec();
-	NextScene Next();
 	bool Exit();
+	virtual NextScene Next();
 	virtual std::shared_ptr<IScene> GetNextScene();
-	void callback();
 };

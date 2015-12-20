@@ -1,15 +1,17 @@
-//TitleScene.h
 #pragma once
-
 #include "IScene.h"
 #include <vector>
 
-class TitleScene : public IScene
+class EndcreditsScene : public IScene
 {
 private:
-	int GraphHandle[400];
-	std::vector<std::string> text;
+	std::shared_ptr<GameTask> root;
+	std::vector<std::string> talk;
+	int PosX;
+	int PosY;
+	int cnt;
 public:
+	EndcreditsScene();
 	bool Init();
 	bool Exec();
 	NextScene Next();

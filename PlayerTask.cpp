@@ -8,26 +8,23 @@ std::shared_ptr<GameTask> CreatePlayerTask(int x, int y)
 
 PlayerTask::PlayerTask(int X, int Y)
 {
-	r = 20;
+	r = 16;
 	id = OBJECT_PLAYER;
 	jFlag = false;
 	x = (float)X * (float)Size_x;
 	y = (float)Y * (float)Size_y;
-	DirType = CHARACTER_DIR_RIGHT;
+	DirType = CHARACTER_DIR_UP;
 	CurrentGraph = 0;
 	counter = 0;
 }
 
 bool PlayerTask::Init()
 {
-	int tmp[12];
-	LoadDivGraph("Data/Character/char.png", 12, 3, 4, Size_x, Size_y, tmp);
-	for (int x = 0; x < 3; x++)
+	int tmp[16];
+	LoadDivGraph("Data/player.bmp", 16, 4, 4, Size_x, Size_y, tmp);
+	for (int x = 0; x < 4; x++)
 		for (int y = 0; y < 4; y++)
-			GraphHandle[y][x] = tmp[3 * y + x];
-
-	//MoveType = CHARACTER_STAY;
-	
+			GraphHandle[y][x] = tmp[4 * y + x];
 
 	return true;
 }
@@ -49,7 +46,7 @@ GAMETASK_CODE PlayerTask::Update()
 		y_temp = y;
 		y += (y - y_prev) + 1;
 		y_prev = y_temp;
-		if (y == 320 )
+		if (y == 336 )
 			jFlag = false;
 	}
 	if (KeyDownChecker::GetKeyDownState(KEY_INPUT_UP) && jFlag == false){
@@ -61,10 +58,8 @@ GAMETASK_CODE PlayerTask::Update()
 	if (KeyDownChecker::GetKeyState(KEY_INPUT_LEFT)	 ||KeyDownChecker::GetKeyState(KEY_INPUT_RIGHT))
 	{
 		counter++;
-		//MoveType = CHARACTER_MOVE;
-
 		if (counter % 20 == 1){
-			CurrentGraph = (CurrentGraph == 0 ? 2 : 0);
+			CurrentGraph = (CurrentGraph == 1 ? 3 : 1);
 		}
 		//‰æ–ÊŠO”»’è
 		if (x < 0)
@@ -75,7 +70,7 @@ GAMETASK_CODE PlayerTask::Update()
 	else
 	{
 		counter = 0;
-		CurrentGraph = 1;
+		CurrentGraph = 0;
 	}
 	return TASK_SUCCEEDED;
 }
@@ -89,7 +84,7 @@ GAMETASK_CODE PlayerTask::Draw()
 
 bool PlayerTask::Exit()
 {
-	for (int x = 0; x < 3; x++)
+	for (int x = 0; x < 4; x++)
 		for (int y = 0; y < 4; y++)
 			 DeleteGraph(GraphHandle[x][y]);
 

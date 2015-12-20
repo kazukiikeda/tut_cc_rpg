@@ -3,14 +3,9 @@
 
 #include <memory>
 #include <DxLib.h>
-enum BeforScene{
-	START,
-	BATTLE,
-	MAP,
-	HOUSE,
-	LEFT,
-	RIGHT,
-};
+#include <string>
+#include "GameTask.h"
+
 enum NextScene{
 	KEEP,
 	NEW,
@@ -22,10 +17,12 @@ class IScene
 {
 protected:
 	int num;
-	int befornum;
 	bool Flag;
-	int ID;
+	std::string ID;
 	int dead;
+	std::string nextscene;
+	int nextPosX;
+	std::string scene;
 public:
 	virtual bool Init() = 0;
 	virtual bool Exec() = 0;
@@ -33,9 +30,11 @@ public:
 	virtual bool Exit() = 0;
 	virtual std::shared_ptr<IScene> GetNextScene() = 0;
 	bool talkflag = false;
-	virtual void callback(){};
 };
 
-std::shared_ptr<IScene> CreateMapScene(BeforScene BEFOR, int PosX);
+std::shared_ptr<IScene> CreateMapScene(int PosX, std::string SceneName);
 std::shared_ptr<IScene> CreateTitleScene();
-std::shared_ptr<IScene> CreateBattleScene(int Object_num);
+std::shared_ptr<IScene> CreateBattleScene(std::string id);
+std::shared_ptr<IScene> CreateEventScene(std::string id);
+std::shared_ptr<IScene> CreateEpilogueScene();
+std::shared_ptr<IScene> CreateEndcreditsScene();
